@@ -55,6 +55,8 @@ exports.updateStudent = (id, student) => {
     (student.sex != undefined && student.birth != undefined ? ", " : "") + 
     (student.birth == undefined ? "" : "birth = '" + student.birth + "' ") + 
     (student.birth != undefined && student.section != undefined ? ", " : "") + 
+    (student.observation == undefined ? "" : "observation = '" + student.observation + "' ") + 
+    (student.observation != undefined && student.section != undefined ? ", " : "") + 
     (student.section == undefined ? "" : "section = '" + student.section + "' ") + 
     "WHERE id = '" + id + "'"
 }
