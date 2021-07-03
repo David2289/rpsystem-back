@@ -10,12 +10,19 @@ exports.selectStudents = () => {
 }
 
 exports.selectStudentById = (id) => {
-    return `SELECT * FROM students WHERE id = '${id}'`
+    return `
+    SELECT id, fname, mname, lname, 
+    fsurname, lsurname, email, sex, 
+    DATE_FORMAT(birth, '%Y-%m-%d %H:%i:%s') AS birth, 
+    DATE_FORMAT(regdate, '%Y-%m-%d %H:%i:%s') AS regdate, 
+    section, observation 
+    FROM students 
+    WHERE id = '${id}'`
 }
 
 exports.insertStudent = (student) => {
     return `
-    INSERT INTO students (fname, mname, lname, fsurname, lsurname, email, sex, birth, regdate, section, observation) 
+    INSERT INTO students (fname, mname, lname, fsurname, lsurname, email, sex, birth, section, observation) 
     VALUES(
         '${student.fname}', 
         '${student.mname}', 
@@ -25,7 +32,6 @@ exports.insertStudent = (student) => {
         '${student.email}', 
         '${student.sex}', 
         '${student.birth}', 
-        '${student.regdate}', 
         '${student.section}', 
         '${student.observation}'
     )`
@@ -48,9 +54,7 @@ exports.updateStudent = (id, student) => {
     (student.sex == undefined ? "" : "sex = '" + student.sex + "' ") + 
     (student.sex != undefined && student.birth != undefined ? ", " : "") + 
     (student.birth == undefined ? "" : "birth = '" + student.birth + "' ") + 
-    (student.birth != undefined && student.regdate != undefined ? ", " : "") + 
-    (student.regdate == undefined ? "" : "regdate = '" + student.regdate + "' ") + 
-    (student.regdate != undefined && student.section != undefined ? ", " : "") + 
+    (student.birth != undefined && student.section != undefined ? ", " : "") + 
     (student.section == undefined ? "" : "section = '" + student.section + "' ") + 
     "WHERE id = '" + id + "'"
 }
