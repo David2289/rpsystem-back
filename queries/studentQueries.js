@@ -2,10 +2,10 @@
 exports.selectStudents = () => {
     return `
     SELECT id, fname, mname, lname, 
-    fsurname, lsurname, sex, age, 
+    fsurname, lsurname, email, sex, 
     DATE_FORMAT(birth, '%Y-%m-%d %H:%i:%s') AS birth, 
     DATE_FORMAT(regdate, '%Y-%m-%d %H:%i:%s') AS regdate, 
-    section 
+    section, observation 
     FROM students`
 }
 
@@ -15,17 +15,19 @@ exports.selectStudentById = (id) => {
 
 exports.insertStudent = (student) => {
     return `
-    INSERT INTO students (fname, mname, lname, fsurname, lsurname, sex, age, birth, section) 
+    INSERT INTO students (fname, mname, lname, fsurname, lsurname, email, sex, birth, regdate, section, observation) 
     VALUES(
         '${student.fname}', 
         '${student.mname}', 
         '${student.lname}', 
         '${student.fsurname}', 
         '${student.lsurname}', 
+        '${student.email}', 
         '${student.sex}', 
-        '${student.age}', 
         '${student.birth}', 
-        '${student.section}'
+        '${student.regdate}', 
+        '${student.section}', 
+        '${student.observation}'
     )`
 }
 
@@ -40,13 +42,15 @@ exports.updateStudent = (id, student) => {
     (student.fsurname == undefined ? "" : "fsurname = '" + student.fsurname + "' ") + 
     (student.fsurname != undefined && student.lsurname != undefined ? ", " : "") + 
     (student.lsurname == undefined ? "" : "lsurname = '" + student.lsurname + "' ") + 
-    (student.lsurname != undefined && student.sex != undefined ? ", " : "") + 
+    (student.lsurname != undefined && student.email != undefined ? ", " : "") + 
+    (student.email == undefined ? "" : "email = '" + student.email + "' ") + 
+    (student.email != undefined && student.sex != undefined ? ", " : "") + 
     (student.sex == undefined ? "" : "sex = '" + student.sex + "' ") + 
-    (student.sex != undefined && student.age != undefined ? ", " : "") + 
-    (student.age == undefined ? "" : "age = '" + student.age + "' ") + 
-    (student.age != undefined && student.birth != undefined ? ", " : "") + 
+    (student.sex != undefined && student.birth != undefined ? ", " : "") + 
     (student.birth == undefined ? "" : "birth = '" + student.birth + "' ") + 
-    (student.birth != undefined && student.section != undefined ? ", " : "") + 
+    (student.birth != undefined && student.regdate != undefined ? ", " : "") + 
+    (student.regdate == undefined ? "" : "regdate = '" + student.regdate + "' ") + 
+    (student.regdate != undefined && student.section != undefined ? ", " : "") + 
     (student.section == undefined ? "" : "section = '" + student.section + "' ") + 
     "WHERE id = '" + id + "'"
 }
