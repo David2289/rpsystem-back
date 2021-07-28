@@ -1,5 +1,7 @@
 const pool = require('../pool');
 const queries = require('../queries/studentQueries');
+const fs = require('fs');
+const path = require('path');
 
 exports.getStudents = async (req, res) => {
     try {
@@ -23,6 +25,12 @@ exports.getStudentById = async (req, res) => {
         pool.query(queries.selectStudentById(id), (err, response) => {
             if (err) throw err;
             if(response) {
+                if (response[0].photo) {
+                    const fileName = + response[0].id + '-user.png';
+                    fs.writeFileSync(path.join(__dirname, '../dbimages/' + fileName), response[0].photo) //create image file in dbimages/
+                    const port = process.env.PORT;
+                    response[0].photo = `http://localhost:${port}/${fileName}`
+                }
                 res.json(response);
             }
             res.end();
@@ -64,6 +72,25 @@ exports.updateStudent = async (req, res) => {
         });
     } 
     catch(error) {
+        return res.json(error);
+    }
+}
+
+
+exports.updateStudentPhoto = async (req, res) => {
+    let id = req.params.studentId;
+    const data = fs.readFileSync(path.join(__dirname, '../images/' + req.file.filename))
+    try {
+        pool.query(queries.updateStudentPhoto(), [data, id], (err, response) => {
+            if (err) return res.status(500).send('server error')
+            if(response) {
+                res.json({result: 'ok'})
+            }
+            res.end();
+        });
+    } 
+    catch(error) {
+        console.log('error')
         return res.json(error);
     }
 }

@@ -13,7 +13,7 @@ exports.selectStudentById = (id) => {
     return `
     SELECT id, fname, mname, lname, 
     fsurname, lsurname, email, sex, 
-    DATE_FORMAT(birth, '%Y-%m-%d %H:%i:%s') AS birth, 
+    DATE_FORMAT(birth, '%Y-%m-%d %H:%i:%s') AS birth, photo, 
     DATE_FORMAT(regdate, '%Y-%m-%d %H:%i:%s') AS regdate, 
     section, observation 
     FROM students 
@@ -54,11 +54,17 @@ exports.updateStudent = (id, student) => {
     (student.sex == undefined ? "" : "sex = '" + student.sex + "' ") + 
     (student.sex != undefined && student.birth != undefined ? ", " : "") + 
     (student.birth == undefined ? "" : "birth = '" + student.birth + "' ") + 
-    (student.birth != undefined && student.section != undefined ? ", " : "") + 
+    (student.birth != undefined && student.photo != undefined ? ", " : "") + 
+    (student.photo == undefined ? "" : "photo = '" + student.photo + "' ") + 
+    (student.photo != undefined && student.observation != undefined ? ", " : "") + 
     (student.observation == undefined ? "" : "observation = '" + student.observation + "' ") + 
     (student.observation != undefined && student.section != undefined ? ", " : "") + 
     (student.section == undefined ? "" : "section = '" + student.section + "' ") + 
     "WHERE id = '" + id + "'"
+}
+
+exports.updateStudentPhoto = () => {
+    return "UPDATE students SET photo = ? WHERE id = ?"
 }
 
 exports.deleteStudent = (id) => {
