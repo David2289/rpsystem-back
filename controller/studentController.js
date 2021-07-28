@@ -31,7 +31,7 @@ exports.getStudentById = async (req, res) => {
                     const port = process.env.PORT;
                     response[0].photo = `http://localhost:${port}/${fileName}`
                 }
-                res.json(response);
+                res.json(response[0]);
             }
             res.end();
         });
