@@ -13,7 +13,8 @@ require('dotenv').config(); //Dotenv: to use env variables.
 app.use(express.static(path.join(__dirname, 'dbimages')));
 
 /** routes **/
-app.use('/api/students', require('./route/studentRouter'));
+const baseHost = '/api/students';
+app.use(baseHost, require('./route/studentRouter'));
 
 /** port **/
 const port = process.env.PORT;
